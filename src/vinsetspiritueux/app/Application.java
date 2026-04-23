@@ -7,6 +7,10 @@ package vinsetspiritueux.app;
  * @since 08.12.2023
  * @version 1.1.0
  */
+
+import vinsetspiritueux.ctrl.Controller;
+import vinsetspiritueux.service.ServiceGestionVins;
+import vinsetspiritueux.view.View;
 public class Application {
 
     /**
@@ -15,7 +19,14 @@ public class Application {
      * @param args les arguments du programme passés sur la ligne de commande
      */
     public static void main( String[] args ) {
-      // VOTRE CODE ICI...
+      Controller refCtrl = new Controller();
+      ServiceGestionVins refServiceGestionVins = new ServiceGestionVins();
+      refCtrl.setRefServiceGestionVins(refServiceGestionVins);
+      View refView = new View();
+      refCtrl.setRefView(refView);
+      refView.setRefCtrl(refCtrl);
+      refServiceGestionVins.setRefCtrl(refCtrl);
+      refCtrl.start();
     }
 
 }
