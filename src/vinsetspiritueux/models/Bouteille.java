@@ -1,5 +1,8 @@
 package vinsetspiritueux.models;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 /**
  * Modèle qui représente une bouteille de vin.
  *
@@ -12,17 +15,17 @@ public class Bouteille {
     /**
      * Le nom de cette bouteille de vin non modifiable.
      */
-    // VOTRE CODE ICI...
+    private final String nom;
 
     /**
      * L'année de cette bouteille de vin non modifiable.
      */
-    // VOTRE CODE ICI...
+    private final int annee;
     
     /**
      * Le prix de cette bouteille de vin non modifiable.
      */
-    // VOTRE CODE ICI...
+    private final double prix;
 
     /**
      * Le constructeur de la classe Bouteille. Toujours initialiser TOUS les attributs !
@@ -32,7 +35,9 @@ public class Bouteille {
      * @param prix le prix de ce vin
      */
     public Bouteille( String nom, int annee, double prix ) {
-        // VOTRE CODE ICI...
+        this.nom = nom;
+        this.annee = annee;
+        this.prix = prix;
     }
 
     /**
@@ -44,7 +49,12 @@ public class Bouteille {
      */
     @Override
     public String toString() {
-        // VOTRE CODE ICI...
+        DecimalFormat form = new DecimalFormat("0.00");
+        DecimalFormatSymbols sym = form.getDecimalFormatSymbols();
+        sym.setDecimalSeparator('.');
+        form.setDecimalFormatSymbols(sym);
+        String prixString = form.format(prix);
+        return nom + " de " + annee + " / " + prixString + " Frs";
     }
 
     /**
@@ -53,7 +63,7 @@ public class Bouteille {
      * @return le nom de la bouteille de vin
      */
     public String getNom() {
-        // VOTRE CODE ICI...
+        return nom;
     }
 
     /**
@@ -62,7 +72,7 @@ public class Bouteille {
      * @return l'année de la bouteille de vin
      */
     public int getAnnee() {
-        // VOTRE CODE ICI...
+        return annee;
     }
 
     /**
@@ -71,7 +81,7 @@ public class Bouteille {
      * @return le prix de la bouteille de vin
      */
     public double getPrix() {
-        // VOTRE CODE ICI...
+        return prix;
     }
 
 }

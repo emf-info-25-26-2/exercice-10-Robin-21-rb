@@ -12,12 +12,12 @@ public class Local {
     /**
      * Les armoires de ce local.
      */
-    // VOTRE CODE ICI...
+    private Armoire[]armoires;
 
     /**
      * Le nom de ce local non modifiable.
      */
-    // VOTRE CODE ICI...
+    private final String nom;
 
     /**
      * Le constructeur de la classe Local. Toujours initialiser TOUS les attributs ! Lors de la création d'un nouveau
@@ -26,7 +26,8 @@ public class Local {
      * @param nom le nom de ce nouveau local
      */
     public Local( String nom ) {
-        // VOTRE CODE ICI...
+        this.nom = nom;
+        this.armoires = new Armoire[0];
     }
 
     /**
@@ -37,7 +38,14 @@ public class Local {
      * @param armoire l'armoire à rajouter
      */
     public void ajouterArmoire( Armoire armoire ) {
-        // VOTRE CODE ICI...
+        int taille = armoires.length;
+        taille += 1;
+        Armoire[] newArmoires = new Armoire[taille];
+        for(int i = 0; i< armoires.length; i++){
+            newArmoires[i] = armoires[i];
+        }
+        newArmoires[taille-1] = armoire;
+        armoires = newArmoires;
     }
 
     /**
@@ -48,7 +56,28 @@ public class Local {
      * @return vrai si et seulement si cette armoire était présente dans la liste des armoires de ce local
      */
     public boolean enleverArmoire( Armoire armoire ) {
-        // VOTRE CODE ICI...
+        int indexDelete = -1;
+        boolean estPresent = false;
+        for (int i = 0; i< armoires.length ; i++){
+            
+            if(armoires[i] == armoire){
+                armoires[i] = null;
+                indexDelete = i;
+                estPresent = true;
+            }
+            if(i >= indexDelete && indexDelete!= -1 && i != armoires.length-1){
+                armoires[i] = armoires[i+1];
+                armoires[i+1] = null;
+            }
+            
+        }
+        armoires[armoires.length-1] = null;
+        Armoire[] newArmoires = new Armoire[armoires.length-1];
+        for(int i = 0; i < newArmoires.length; i++){
+            newArmoires[i] = armoires[i];
+        }
+        armoires = newArmoires;
+        return estPresent;
     }
 
     /**
@@ -57,7 +86,14 @@ public class Local {
      * @return la valeur totale des bouteilles contenues dans ce local
      */
     public double valeurTotaleStock() {
-        // VOTRE CODE ICI...
+        double prixTotal = 0;
+        for(int i = 0; i < armoires.length; i++){
+            int taille = armoires[i].getBouteilles().length;
+            for(int j = 0; j < taille; j++){
+                prixTotal += armoires[i].getBouteilles()[j].getPrix();
+            }
+        }
+        return prixTotal;
     }
 
     /**
@@ -68,7 +104,30 @@ public class Local {
      * @return un objet Statistique transportant les informations précitées
      */
     public Statistique calculerStatistiques() {
-        // VOTRE CODE ICI...
+        Bouteille plusGrand = null;
+        Bouteille plusPetit = null;
+        int nbresBouteilles = 0;
+        for(int i = 0; i < armoires.length; i++){
+            int taille = armoires[i].getBouteilles().length;
+            for(int j = 0; j < taille; j++){
+                nbresBouteilles ++;
+                if(j == 0){
+                    plusGrand = armoires[i].getBouteilles()[j];
+                    plusPetit = armoires[i].getBouteilles()[j];
+                }
+                else{
+                    if(plusGrand.getPrix() < armoires[i].getBouteilles()[j].getPrix()){
+                        plusGrand = armoires[i].getBouteilles()[j];
+                    }
+                    if(plusPetit.getPrix() > armoires[i].getBouteilles()[j].getPrix()){
+                        plusPetit = armoires[i].getBouteilles()[j];
+                    }
+                }
+            }
+        }
+        double moyenne = valeurTotaleStock() / (double) nbresBouteilles;
+        Statistique stat = new Statistique(plusGrand, plusPetit, nbresBouteilles, moyenne);
+        return stat;
     }
 
     /**
@@ -77,7 +136,7 @@ public class Local {
      * @return le nom de ce local
      */
     public String getNom() {
-        // VOTRE CODE ICI...
+        return nom;
     }
 
     /**
@@ -86,7 +145,7 @@ public class Local {
      * @return les armoires de ce local
      */
     public Armoire[] getArmoires() {
-        // VOTRE CODE ICI...
+        return armoires;
     }
 
 }

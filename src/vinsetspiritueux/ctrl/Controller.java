@@ -1,5 +1,11 @@
 package vinsetspiritueux.ctrl;
 
+import vinsetspiritueux.models.Armoire;
+import vinsetspiritueux.models.Bouteille;
+import vinsetspiritueux.models.Local;
+import vinsetspiritueux.view.View;
+import vinsetspiritueux.service.ServiceGestionVins;
+
 /**
  * Classe représentant le contrôleur de l'application MVC "VinsEtSpiritueux" du
  * module D400.
@@ -13,23 +19,25 @@ public class Controller {
     /**
      * Référence au worker principal de l'application.
      */
-    // VOTRE CODE ICI...
+    private ServiceGestionVins refService;
 
     /**
      * Référence à l'ihm principale de l'application.
      */
-    // VOTRE CODE ICI...
+    private View refView;
 
     /**
      * Attribut qui va contenir les locaux de l'entreprise.
      */
-    // VOTRE CODE ICI...
+    private Local[] locaux;
 
     /**
      * Le constructeur de la classe Ctrl. Au démarrage, la liste de locaux est vide.
      */
     public Controller() {
-        // VOTRE CODE ICI...
+        this.locaux = new Local[0];
+        this.refService = null;
+        this.refView = null;
     }
 
     /**
@@ -38,7 +46,7 @@ public class Controller {
      * de la démarrer.
      */
     public void start() {
-        // VOTRE CODE ICI...
+        refView.viewStart();
     }
 
     /**
@@ -57,7 +65,26 @@ public class Controller {
      * pour ce projet.
      */
     public void actionChargerEntrepriseA() {
-        // VOTRE CODE ICI...
+        Local l1 = new Local("Salle A01");
+        Local [] newLocaux = new Local[1];
+        locaux = newLocaux;
+        locaux[0]= l1;
+        Armoire a1 = new Armoire("A01A", 100);
+        Armoire a2 = new Armoire("A01B", 50);
+        Bouteille b1 = new Bouteille("Leroy Chambertin Grand Cru", 2003, 3900);
+        Bouteille b2 = new Bouteille("Montrachet Grand Cru", 2004, 1499);
+        Bouteille b3 = new Bouteille("Château Lafite-Rothschild", 2006, 989.5);
+        Bouteille b4 = new Bouteille("Romanée Conti Grand Cru", 2001, 14000);
+        Bouteille b5 = new Bouteille("Montrachet Grand Cru", 2004, 5100);
+        Bouteille b6 = new Bouteille("Petrus", 2005, 2350);
+        l1.ajouterArmoire(a2);
+        l1.ajouterArmoire(a1);
+        a1.ajouterBouteille(b1);
+        a1.ajouterBouteille(b2);
+        a1.ajouterBouteille(b3);
+        a2.ajouterBouteille(b4);
+        a2.ajouterBouteille(b5);
+        a2.ajouterBouteille(b6);
     }
 
     /**
@@ -68,7 +95,41 @@ public class Controller {
      * pour ce projet.
      */
     public void actionChargerEntrepriseB() {
-        // VOTRE CODE ICI...
+        Local l1 = new Local("Cave en pierre");
+        Local l2 = new Local("Halle de stockage");
+        Local [] newLocaux = new Local[2];
+        locaux = newLocaux;
+        locaux[0] = l1;
+        locaux[1] = l2;
+        // Armoires
+        Armoire a1 = new Armoire("C-01", 100);
+        Armoire a2 = new Armoire("H-01", 100);
+        Armoire a3 = new Armoire("H-02", 100);
+
+        // Bouteilles pour C-01
+        Bouteille b1 = new Bouteille("Montrachet Grand Cru", 2004, 1499);
+        Bouteille b2 = new Bouteille("Château Lafite-Rothschild", 2006, 989.5);
+        Bouteille b3 = new Bouteille("Romanée Conti Grand Cru", 2001, 14000);
+        Bouteille b4 = new Bouteille("Petrus", 2005, 2350);
+
+        // Bouteilles pour H-01
+        Bouteille b5 = new Bouteille("Dôle de Salquenen", 2010, 39.90);
+        Bouteille b6 = new Bouteille("Dôle blanche", 2019, 29.90);
+        Bouteille b7 = new Bouteille("Malvoisie", 2018, 24.90);
+
+        // Bouteilles pour H-02
+        Bouteille b8 = new Bouteille("Pinot noir", 2016, 19.90);
+        l1.ajouterArmoire(a1);
+        l2.ajouterArmoire(a2);
+        l2.ajouterArmoire(a3);
+        a1.ajouterBouteille(b1);
+        a1.ajouterBouteille(b2);
+        a1.ajouterBouteille(b3);
+        a1.ajouterBouteille(b4);
+        a2.ajouterBouteille(b5);
+        a2.ajouterBouteille(b6);
+        a2.ajouterBouteille(b7);
+        a3.ajouterBouteille(b8);
     }
 
     /**
@@ -79,7 +140,8 @@ public class Controller {
      * pour ce projet.
      */
     public void actionChargerEntrepriseC() {
-        // VOTRE CODE ICI...
+        Local [] newLocaux = new Local[0];
+        locaux = newLocaux;
     }
 
     /**
@@ -87,21 +149,21 @@ public class Controller {
      * l'entreprise.
      */
     public void actionAfficherValeurStock() {
-        // VOTRE CODE ICI...
+        refService.afficherValeurStock(locaux);
     }
 
     /**
      * Affiche tous les détails disponibles pour les locaux de l'entreprise.
      */
     public void actionAfficherTout() {
-        // VOTRE CODE ICI...
+        refService.afficherTout(locaux);
     }
 
     /**
      * Affiche des informations statistiques pour chacun des locaux de l'entreprise.
      */
     public void actionAfficherStatistiques() {
-        // VOTRE CODE ICI...
+        refService.afficherStatistiques(locaux);
     }
 
     /**
@@ -110,7 +172,7 @@ public class Controller {
      * @return la référence au worker de l'application
      */
     public ServiceGestionVins getRefServiceGestionVins() {
-        // VOTRE CODE ICI...
+        return refService;
     }
 
     /**
@@ -119,7 +181,7 @@ public class Controller {
      * @param service la référence au service GestionVins de l'application
      */
     public void setRefServiceGestionVins(ServiceGestionVins service) {
-        // VOTRE CODE ICI...
+        this.refService = service;
     }
 
     /**
@@ -128,7 +190,7 @@ public class Controller {
      * @return la référence à la vue de l'application
      */
     public View getReView() {
-        // VOTRE CODE ICI...
+        return refView;
     }
 
     /**
@@ -137,7 +199,7 @@ public class Controller {
      * @param view la référence à la vue de l'application
      */
     public void setRefView(View view) {
-        // VOTRE CODE ICI...
+        this.refView = view;
     }
 
 }

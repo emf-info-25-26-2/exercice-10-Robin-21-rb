@@ -13,12 +13,12 @@ public class Armoire {
     /**
      * Le contenu de cette armoire à bouteilles.
      */
-    // VOTRE CODE ICI...
+    private Bouteille[] contenu;
     
     /**
      * Le nom de cette armoire à bouteilles.
      */
-    // VOTRE CODE ICI...
+    private String nom;
 
     /**
      * Le constructeur de la classe Armoire.Toujours initialiser TOUS les attributs !
@@ -27,7 +27,8 @@ public class Armoire {
      * @param nbreMaxBouteilles le nombre maximum de bouteilles que cette nouvelle armoire pourra stocker
      */
     public Armoire( String nom, int nbreMaxBouteilles ) {
-        // VOTRE CODE ICI...
+        this.nom = nom;
+        this.contenu = new Bouteille[nbreMaxBouteilles];
     }
 
     /**
@@ -36,7 +37,13 @@ public class Armoire {
      * @return vrai si et seulement si il n'y a plus de place pour rajouter une bouteille dans cette armoire
      */
     public boolean armoireEstPleine() {
-        // VOTRE CODE ICI...
+        boolean estPlein = true;
+        for(int i = 0; i < contenu.length; i++){
+            if(contenu[i] == null){
+                estPlein = false;
+            }
+        }
+        return estPlein;
     }
 
     /**
@@ -46,8 +53,16 @@ public class Armoire {
      * @param bouteille bouteille à ajouter
      * @return vrai si et seulement si une bouteille est fournie et qu'il y avait encore une place dans cette armoire
      */
-    public boolean ajouterBouteille( Bouteille bouteille ) {     
-        // VOTRE CODE ICI...   
+    public boolean ajouterBouteille( Bouteille bouteille ) {
+        boolean peutAjouter = false;     
+        for(int i = 0; i< contenu.length; i++){
+            if(contenu[i] == null){
+                contenu[i] = bouteille;
+                peutAjouter = true;
+                break;
+            }
+        }
+        return peutAjouter;
     }
 
     /**
@@ -58,7 +73,14 @@ public class Armoire {
      * @return vrai si et seulement si une bouteille est fournie et que celle-ci a été trouvée dans cette armoire
      */
     public boolean enleverBouteille( Bouteille bouteille ) {
-        // VOTRE CODE ICI...
+        boolean peutSupprimer = false;
+        for(int i = 0; i < contenu.length; i++){
+            if(contenu[i] == bouteille){
+                contenu[i] = null;
+                peutSupprimer = true;
+            }
+        }
+        return peutSupprimer;
     }
 
     /**
@@ -67,7 +89,11 @@ public class Armoire {
      * @return la valeur totale des bouteilles contenues dans cette armoire
      */
     public double valeurTotaleStock() {
-        // VOTRE CODE ICI...
+        double compteurPrix = 0;
+        for (int i = 0; i<contenu.length; i++){
+            compteurPrix += contenu[i].getPrix();
+        }
+        return compteurPrix;
     }
 
     /**
@@ -76,7 +102,22 @@ public class Armoire {
      * @return liste de toutes les bouteilles de cette armoire sans "trous"
      */
     public Bouteille[] getBouteilles() {
-        // VOTRE CODE ICI...
+        int taille = 0;
+        
+        for(int i = 0; i < contenu.length; i++){
+            if(contenu[i] != null){
+                taille ++;
+            }
+        }
+        Bouteille[] newBouteille = new Bouteille[taille];
+        int index = 0;
+        for(int i = 0; i < contenu.length; i++){
+            if(contenu[i] != null){
+                newBouteille[index] = contenu[i];
+                index ++;
+            }
+        }
+        return newBouteille;
     }
 
     /**
@@ -87,7 +128,31 @@ public class Armoire {
      * @return un objet Statistique transportant les informations précitées
      */
     public Statistique calculerStatistiques() {
-        // VOTRE CODE ICI...
+        Bouteille plusGrand = null;
+        Bouteille plusPetit = null;
+        double prixTotal = 0;
+        int nbresBouteilles = 0;
+        
+            int taille = getBouteilles().length;
+            for(int j = 0; j < taille; j++){
+                prixTotal += getBouteilles()[j].getPrix();
+                nbresBouteilles ++;
+                if(j == 0){
+                    plusGrand = getBouteilles()[j];
+                    plusPetit = getBouteilles()[j];
+                }
+                else{
+                    if(plusGrand.getPrix() < getBouteilles()[j].getPrix()){
+                        plusGrand = getBouteilles()[j];
+                    }
+                    if(plusPetit.getPrix() > getBouteilles()[j].getPrix()){
+                        plusPetit = getBouteilles()[j];
+                    }
+                }
+            }
+        double moyenne = prixTotal / (double) nbresBouteilles;
+        Statistique stat = new Statistique(plusGrand, plusPetit, nbresBouteilles, moyenne);
+        return stat;
     }
 
     /**
@@ -96,7 +161,7 @@ public class Armoire {
      * @return nom de cette armoire à bouteilles
      */
     public String getNom() {
-        // VOTRE CODE ICI...
+        return nom;
     }
 
 }
